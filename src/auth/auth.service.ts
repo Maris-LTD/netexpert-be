@@ -11,13 +11,21 @@ export class AuthService {
     ) {}
 
     async signIn(username: string, pass: string): Promise<any> {
-        const user = await this.usersService.findOne(username);
+        const user = await this.usersService.getUser(username);
         if (!user) {
             throw new NotFoundException();
         }
         if (user.password !== pass) {
             throw new UnauthorizedException();
         }
-        return this.jwtService.signAsync(user, { secret: jwtConstants.secret });
+        return this.jwtService.signAsync({
+            username: user.username,
+            password: user.password,
+            userId: user.id
+        }, { secret: jwtConstants.secret });
+    }
+
+    async signUp(username: string, email: string, password: string) {
+        return this.usersService.createUser(username, email, password);
     }
 }

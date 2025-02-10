@@ -13,12 +13,29 @@ const app_service_1 = require("./app.service");
 const auth_module_1 = require("./auth/auth.module");
 const users_module_1 = require("./users/users.module");
 const blogs_module_1 = require("./blogs/blogs.module");
+const typeorm_1 = require("@nestjs/typeorm");
+const sessions_module_1 = require("./sessions/sessions.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
-        imports: [auth_module_1.AuthModule, users_module_1.UsersModule, blogs_module_1.BlogsModule],
+        imports: [
+            auth_module_1.AuthModule,
+            users_module_1.UsersModule,
+            blogs_module_1.BlogsModule,
+            typeorm_1.TypeOrmModule.forRoot({
+                type: 'postgres',
+                host: 'aws-0-ap-southeast-1.pooler.supabase.com',
+                port: 5432,
+                username: 'postgres.xrnjiwuvobgqdzscqgqm',
+                password: 'Dd150805',
+                database: 'postgres',
+                autoLoadEntities: true,
+                synchronize: false,
+            }),
+            sessions_module_1.SessionsModule,
+        ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],
     })

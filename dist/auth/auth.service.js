@@ -20,14 +20,21 @@ let AuthService = class AuthService {
         this.jwtService = jwtService;
     }
     async signIn(username, pass) {
-        const user = await this.usersService.findOne(username);
+        const user = await this.usersService.getUser(username);
         if (!user) {
             throw new common_1.NotFoundException();
         }
         if (user.password !== pass) {
             throw new common_1.UnauthorizedException();
         }
-        return this.jwtService.signAsync(user, { secret: constants_1.jwtConstants.secret });
+        return this.jwtService.signAsync({
+            username: user.username,
+            password: user.password,
+            userId: user.id
+        }, { secret: constants_1.jwtConstants.secret });
+    }
+    async signUp(username, email, password) {
+        return this.usersService.createUser(username, email, password);
     }
 };
 exports.AuthService = AuthService;

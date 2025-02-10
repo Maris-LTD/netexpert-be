@@ -1,5 +1,9 @@
+import { Repository } from 'typeorm';
+import { User } from './user.entity';
 export declare class UsersService {
-    private readonly users;
-    findOne(username: string): Promise<any | undefined>;
-    findAll(): Promise<any[]>;
+    private userRepository;
+    constructor(userRepository: Repository<User>);
+    createUser(username: string, email: string, password: string): Promise<User>;
+    getUsers(): Promise<User[]>;
+    getUser(username: string): Promise<User | null>;
 }
