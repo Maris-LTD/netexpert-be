@@ -6,6 +6,8 @@ import { UsersModule } from './users/users.module';
 import { BlogsModule } from './blogs/blogs.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { SessionsModule } from './sessions/sessions.module';
+import { ChatModule } from './chat/chat.module';
+import { ConversationsModule } from './conversations/conversations.module';
 
 @Module({
   imports: [
@@ -23,6 +25,8 @@ import { SessionsModule } from './sessions/sessions.module';
       synchronize: false,
     }),
     SessionsModule,
+    ChatModule,
+    ConversationsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -30,14 +30,6 @@ __decorate([
     (0, typeorm_1.Column)({ nullable: false }),
     __metadata("design:type", String)
 ], User.prototype, "password", void 0);
-__decorate([
-    (0, typeorm_1.Column)({ nullable: false, default: () => 'CURRENT_TIMESTAMP' }),
-    __metadata("design:type", Date)
-], User.prototype, "created_at", void 0);
-__decorate([
-    (0, typeorm_1.Column)({ nullable: true, default: () => 'CURRENT_TIMESTAMP' }),
-    __metadata("design:type", Date)
-], User.prototype, "last_login", void 0);
 exports.User = User = __decorate([
     (0, typeorm_1.Entity)('users')
 ], User);
