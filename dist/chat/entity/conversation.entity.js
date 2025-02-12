@@ -9,36 +9,28 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.User = void 0;
+exports.Conversation = void 0;
 const typeorm_1 = require("typeorm");
-let User = class User {
+let Conversation = class Conversation {
 };
-exports.User = User;
+exports.Conversation = Conversation;
 __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)('uuid'),
     __metadata("design:type", String)
-], User.prototype, "id", void 0);
+], Conversation.prototype, "id", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ unique: true, nullable: false }),
+    (0, typeorm_1.Column)(),
     __metadata("design:type", String)
-], User.prototype, "username", void 0);
+], Conversation.prototype, "user_id", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ nullable: false }),
+    (0, typeorm_1.Column)(),
     __metadata("design:type", String)
-], User.prototype, "email", void 0);
+], Conversation.prototype, "session_id", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ nullable: false }),
-    __metadata("design:type", String)
-], User.prototype, "password", void 0);
-__decorate([
-    (0, typeorm_1.Column)({ nullable: false, default: () => 'CURRENT_TIMESTAMP' }),
+    (0, typeorm_1.Column)({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' }),
     __metadata("design:type", Date)
-], User.prototype, "created_at", void 0);
-__decorate([
-    (0, typeorm_1.Column)({ nullable: true, default: () => 'CURRENT_TIMESTAMP' }),
-    __metadata("design:type", Date)
-], User.prototype, "last_login", void 0);
-exports.User = User = __decorate([
-    (0, typeorm_1.Entity)('users')
-], User);
-//# sourceMappingURL=user.entity.js.map
+], Conversation.prototype, "created_at", void 0);
+exports.Conversation = Conversation = __decorate([
+    (0, typeorm_1.Entity)('conversations')
+], Conversation);
+//# sourceMappingURL=conversation.entity.js.map

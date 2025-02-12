@@ -9,36 +9,20 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.User = void 0;
+exports.Session = void 0;
 const typeorm_1 = require("typeorm");
-let User = class User {
+let Session = class Session {
 };
-exports.User = User;
+exports.Session = Session;
 __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)('uuid'),
     __metadata("design:type", String)
-], User.prototype, "id", void 0);
+], Session.prototype, "id", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ unique: true, nullable: false }),
+    (0, typeorm_1.Column)({ nullable: false, unique: true }),
     __metadata("design:type", String)
-], User.prototype, "username", void 0);
-__decorate([
-    (0, typeorm_1.Column)({ nullable: false }),
-    __metadata("design:type", String)
-], User.prototype, "email", void 0);
-__decorate([
-    (0, typeorm_1.Column)({ nullable: false }),
-    __metadata("design:type", String)
-], User.prototype, "password", void 0);
-__decorate([
-    (0, typeorm_1.Column)({ nullable: false, default: () => 'CURRENT_TIMESTAMP' }),
-    __metadata("design:type", Date)
-], User.prototype, "created_at", void 0);
-__decorate([
-    (0, typeorm_1.Column)({ nullable: true, default: () => 'CURRENT_TIMESTAMP' }),
-    __metadata("design:type", Date)
-], User.prototype, "last_login", void 0);
-exports.User = User = __decorate([
-    (0, typeorm_1.Entity)('users')
-], User);
-//# sourceMappingURL=user.entity.js.map
+], Session.prototype, "session_token", void 0);
+exports.Session = Session = __decorate([
+    (0, typeorm_1.Entity)('sessions')
+], Session);
+//# sourceMappingURL=session.entity.js.map

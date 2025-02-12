@@ -12,5 +12,5 @@ export class Conversation {
     session_id: string;
 
     @Column({type: 'timestamp', default: ()=>'CURRENT_TIMESTAMP'})
-    create_at: Date;
+    created_at: Date;
 }

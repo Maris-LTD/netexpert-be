@@ -6,20 +6,21 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.SessionsModule = void 0;
+exports.ChatModule = void 0;
 const common_1 = require("@nestjs/common");
-const sessions_controller_1 = require("./sessions.controller");
-const sessions_service_1 = require("./sessions.service");
+const chat_service_1 = require("./chat.service");
+const chat_controller_1 = require("./chat.controller");
 const typeorm_1 = require("@nestjs/typeorm");
-const session_entity_1 = require("./session.entity");
-let SessionsModule = class SessionsModule {
+const chatHistory_entity_1 = require("./entity/chatHistory.entity");
+const conversation_entity_1 = require("./entity/conversation.entity");
+let ChatModule = class ChatModule {
 };
-exports.SessionsModule = SessionsModule;
-exports.SessionsModule = SessionsModule = __decorate([
+exports.ChatModule = ChatModule;
+exports.ChatModule = ChatModule = __decorate([
     (0, common_1.Module)({
-        imports: [typeorm_1.TypeOrmModule.forFeature([session_entity_1.Session])],
-        controllers: [sessions_controller_1.SessionsController],
-        providers: [sessions_service_1.SessionsService],
+        imports: [typeorm_1.TypeOrmModule.forFeature([chatHistory_entity_1.ChatMessage, conversation_entity_1.Conversation])],
+        providers: [chat_service_1.ChatService],
+        controllers: [chat_controller_1.ChatController],
     })
-], SessionsModule);
-//# sourceMappingURL=sessions.module.js.map
+], ChatModule);
+//# sourceMappingURL=chat.module.js.map

@@ -7,7 +7,6 @@ import { BlogsModule } from './blogs/blogs.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { SessionsModule } from './sessions/sessions.module';
 import { ChatModule } from './chat/chat.module';
-import { ConversationsModule } from './conversations/conversations.module';
 
 @Module({
   imports: [
@@ -26,7 +25,6 @@ import { ConversationsModule } from './conversations/conversations.module';
     }),
     SessionsModule,
     ChatModule,
-    ConversationsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

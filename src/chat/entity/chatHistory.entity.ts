@@ -1,8 +1,11 @@
-import { Column, Entity } from "typeorm";
+import { Column, Entity, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
 
 
 @Entity('chat_history')
 export class ChatMessage {
+    @PrimaryColumn('int8')
+    id: number
+
     @Column({nullable: true})
     message: string;
 

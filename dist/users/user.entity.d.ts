@@ -3,4 +3,6 @@ export declare class User {
     username: string;
     email: string;
     password: string;
+    created_at: Date;
+    last_login: Date;
 }

@@ -15,6 +15,7 @@ const users_module_1 = require("./users/users.module");
 const blogs_module_1 = require("./blogs/blogs.module");
 const typeorm_1 = require("@nestjs/typeorm");
 const sessions_module_1 = require("./sessions/sessions.module");
+const chat_module_1 = require("./chat/chat.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -35,6 +36,7 @@ exports.AppModule = AppModule = __decorate([
                 synchronize: false,
             }),
             sessions_module_1.SessionsModule,
+            chat_module_1.ChatModule,
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],
