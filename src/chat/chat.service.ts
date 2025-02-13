@@ -36,17 +36,39 @@ export class ChatService {
     
 
     //[TODO] get history by user id, session id and conversation id
-    private getChatHistory(conversation_id: string, user_id?: string, session_id?:string){
+    async getChatHistory(conversation_id: string, user_id?: string, session_id?:string){
+        const conditions: any = {};
+        conditions.conversation_id = conversation_id;
+        if (user_id) conditions.user_id = user_id;
+        if (session_id) conditions.session_id = session_id;
 
+        const chatHistory = await this.chatMessageRepository.find({ 
+            where: conditions,
+            order: {
+                created_at: 'ASC'
+            }
+        });
+        return chatHistory;
     }
     // [TODO] start chat, if not have user_id, create a session token and send it to FE
-    async startChat(message: string, user_id?: string, session_id?: string){
+    async startNewChat(message: string, user_id?: string, session_id?: string){
+        const newMessage: any = {};
+        newMessage.message = message;
+        
+        if (user_id) newMessage.user_id = user_id;
+        if (session_id) newMessage.session_id = session_id;
 
+        // [TODO] create a new conversation
+        // [TODO] save the new message
+        // [TODO] restructure the chat history
+        // [TODO] get response from AI
+        // [TODO] save the response
+        // [TODO] return the response to FE
     }
 
     // [TODO] get response when user send a question
     async getResponse(history: any){
-
+        return "hello";
     }
 }
 

@@ -9,3 +9,12 @@ Content-Type: application/json
 
 ###
 GET http://localhost:3000/chat/conversation/user/837f47f0-ecf4-4f7f-98b2-b07233ae7a15
+
+###
+POST http://localhost:3000/chat/history
+Content-Type: application/json
+
+{
+    "conversation_id": "837f47f0-ecf4-4f7f-98b2-b07233ae7a15",
+    "user_id": "837f47f0-ecf4-4f7f-98b2-b07233ae7a15"
+}

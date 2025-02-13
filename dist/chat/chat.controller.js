@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ChatController = void 0;
 const common_1 = require("@nestjs/common");
 const chat_service_1 = require("./chat.service");
+const userInfo_dto_1 = require("./dto/userInfo.dto");
 let ChatController = class ChatController {
     constructor(chatService) {
         this.chatService = chatService;
@@ -24,6 +25,14 @@ let ChatController = class ChatController {
     }
     async getSessionConversations(session_id) {
         return this.chatService.getConversations(session_id = session_id);
+    }
+    async getChatHistory(query) {
+        if (query.user_id) {
+            return this.chatService.getChatHistory(query.conversation_id, query.user_id);
+        }
+        else {
+            return this.chatService.getChatHistory(query.conversation_id, undefined, query.session_id);
+        }
     }
 };
 exports.ChatController = ChatController;
@@ -41,6 +50,13 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], ChatController.prototype, "getSessionConversations", null);
+__decorate([
+    (0, common_1.Get)('/history'),
+    __param(0, (0, common_1.Query)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [userInfo_dto_1.UserInfoDto]),
+    __metadata("design:returntype", Promise)
+], ChatController.prototype, "getChatHistory", null);
 exports.ChatController = ChatController = __decorate([
     (0, common_1.Controller)('chat'),
     __metadata("design:paramtypes", [chat_service_1.ChatService])

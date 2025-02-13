@@ -35,21 +35,25 @@ __decorate([
     __metadata("design:type", String)
 ], ChatMessage.prototype, "conversation_id", void 0);
 __decorate([
-    (0, typeorm_1.Column)('json'),
+    (0, typeorm_1.Column)('json', { default: [] }),
     __metadata("design:type", Object)
 ], ChatMessage.prototype, "devices", void 0);
 __decorate([
-    (0, typeorm_1.Column)('json'),
+    (0, typeorm_1.Column)('json', { default: [] }),
     __metadata("design:type", Object)
 ], ChatMessage.prototype, "blogs", void 0);
 __decorate([
-    (0, typeorm_1.Column)('json'),
+    (0, typeorm_1.Column)('json', { default: [] }),
     __metadata("design:type", Object)
 ], ChatMessage.prototype, "networks", void 0);
 __decorate([
     (0, typeorm_1.Column)({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' }),
     __metadata("design:type", Date)
-], ChatMessage.prototype, "create_at", void 0);
+], ChatMessage.prototype, "created_at", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: false, default: false }),
+    __metadata("design:type", Boolean)
+], ChatMessage.prototype, "is_ai_response", void 0);
 exports.ChatMessage = ChatMessage = __decorate([
     (0, typeorm_1.Entity)('chat_history')
 ], ChatMessage);

@@ -7,5 +7,6 @@ export declare class ChatMessage {
     devices: any;
     blogs: any;
     networks: any;
-    create_at: Date;
+    created_at: Date;
+    is_ai_response: boolean;
 }

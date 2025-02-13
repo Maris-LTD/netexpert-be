@@ -18,15 +18,18 @@ export class ChatMessage {
     @Column({nullable: false})
     conversation_id: string;
 
-    @Column('json')
+    @Column('json', {default: []})
     devices: any;
 
-    @Column('json')
+    @Column('json', {default: []}) 
     blogs: any;
 
-    @Column('json')
+    @Column('json', {default: []})
     networks: any;
 
     @Column({type: 'timestamp', default: () => 'CURRENT_TIMESTAMP'})
-    create_at: Date
+    created_at: Date
+
+    @Column({nullable: false, default: false})
+    is_ai_response: boolean;
 }

@@ -39,11 +39,31 @@ let ChatService = class ChatService {
         }
         return conversations.map(i => i.id);
     }
-    getChatHistory(conversation_id, user_id, session_id) {
+    async getChatHistory(conversation_id, user_id, session_id) {
+        const conditions = {};
+        conditions.conversation_id = conversation_id;
+        if (user_id)
+            conditions.user_id = user_id;
+        if (session_id)
+            conditions.session_id = session_id;
+        const chatHistory = await this.chatMessageRepository.find({
+            where: conditions,
+            order: {
+                created_at: 'ASC'
+            }
+        });
+        return chatHistory;
     }
-    async startChat(message, user_id, session_id) {
+    async startNewChat(message, user_id, session_id) {
+        const newMessage = {};
+        newMessage.message = message;
+        if (user_id)
+            newMessage.user_id = user_id;
+        if (session_id)
+            newMessage.session_id = session_id;
     }
     async getResponse(history) {
+        return "hello";
     }
 };
 exports.ChatService = ChatService;
