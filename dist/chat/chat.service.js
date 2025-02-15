@@ -18,6 +18,7 @@ const typeorm_1 = require("@nestjs/typeorm");
 const conversation_entity_1 = require("./entity/conversation.entity");
 const typeorm_2 = require("typeorm");
 const chatHistory_entity_1 = require("./entity/chatHistory.entity");
+const crypto_1 = require("crypto");
 let ChatService = class ChatService {
     constructor(conversationRepository, chatMessageRepository) {
         this.conversationRepository = conversationRepository;
@@ -39,31 +40,74 @@ let ChatService = class ChatService {
         }
         return conversations.map(i => i.id);
     }
-    async getChatHistory(conversation_id, user_id, session_id) {
+    async getChatHistory(conversation_id, user_id, session_id, limit) {
         const conditions = {};
         conditions.conversation_id = conversation_id;
         if (user_id)
             conditions.user_id = user_id;
         if (session_id)
             conditions.session_id = session_id;
-        const chatHistory = await this.chatMessageRepository.find({
+        const findOptions = {
             where: conditions,
             order: {
                 created_at: 'ASC'
             }
-        });
-        return chatHistory;
+        };
+        if (limit)
+            findOptions.take = limit;
+        try {
+            return await this.chatMessageRepository.find(findOptions);
+        }
+        catch (error) {
+            throw new Error(`Error while fetching chat history: ${error}`);
+        }
     }
     async startNewChat(message, user_id, session_id) {
         const newMessage = {};
+        const newConversation = {};
+        const conversation_id = (0, crypto_1.randomUUID)();
+        newConversation.id = conversation_id;
+        newMessage.conversation_id = conversation_id;
         newMessage.message = message;
-        if (user_id)
+        newMessage.is_ai_response = false;
+        if (user_id) {
+            newConversation.user_id = user_id;
             newMessage.user_id = user_id;
-        if (session_id)
+        }
+        else {
+            newConversation.session_id = session_id;
             newMessage.session_id = session_id;
+        }
+        this.conversationRepository.save(newConversation);
+        this.chatMessageRepository.save(newMessage);
+        const response = await this.getResponse([newMessage]);
+        response.conversation_id = conversation_id;
+        if (user_id)
+            response.user_id = user_id;
+        if (session_id)
+            response.session_id = session_id;
+        this.chatMessageRepository.save(response);
     }
     async getResponse(history) {
-        return "hello";
+        const CHAT_API = "";
+        const chatHistory = this.reconstructChatHistory(history);
+        const response = await fetch(CHAT_API, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ chatHistory })
+        });
+        return response.json();
+    }
+    reconstructChatHistory(history) {
+        const chatHistory = history.map(item => {
+            const message = new Message();
+            message.role = item.is_ai_response ? 'model' : 'user';
+            message.parts = [item.message];
+            return message;
+        });
+        return chatHistory;
     }
 };
 exports.ChatService = ChatService;
@@ -75,7 +119,5 @@ exports.ChatService = ChatService = __decorate([
         typeorm_2.Repository])
 ], ChatService);
 class Message {
-}
-class ChatHistory {
 }
 //# sourceMappingURL=chat.service.js.map

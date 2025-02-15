@@ -6,7 +6,8 @@ export declare class ChatService {
     private readonly chatMessageRepository;
     constructor(conversationRepository: Repository<Conversation>, chatMessageRepository: Repository<ChatMessage>);
     getConversations(user_id?: string, session_id?: string): Promise<string[]>;
-    getChatHistory(conversation_id: string, user_id?: string, session_id?: string): Promise<ChatMessage[]>;
+    getChatHistory(conversation_id: string, user_id?: string, session_id?: string, limit?: number): Promise<ChatMessage[]>;
     startNewChat(message: string, user_id?: string, session_id?: string): Promise<void>;
-    getResponse(history: any): Promise<string>;
+    getResponse(history: any): Promise<any>;
+    private reconstructChatHistory;
 }
