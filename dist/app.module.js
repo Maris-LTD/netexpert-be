@@ -16,7 +16,13 @@ const blogs_module_1 = require("./blogs/blogs.module");
 const typeorm_1 = require("@nestjs/typeorm");
 const sessions_module_1 = require("./sessions/sessions.module");
 const chat_module_1 = require("./chat/chat.module");
+const logger_middleware_1 = require("./middleware/logger.middleware");
 let AppModule = class AppModule {
+    configure(consumer) {
+        consumer
+            .apply(logger_middleware_1.LoggerMiddleware)
+            .forRoutes('*');
+    }
 };
 exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
