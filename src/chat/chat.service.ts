@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { ChatMessage } from './entity/chatHistory.entity';
 import { randomUUID } from 'crypto';
 
+
 @Injectable()
 export class ChatService {
     constructor(
@@ -56,54 +57,87 @@ export class ChatService {
         } catch (error) {
             throw new Error(`Error while fetching chat history: ${error}`);
         }
-        
     }
     // [TODO] start chat, if not have user_id, create a session token and send it to FE
-    async startNewChat(message: string, user_id?: string, session_id?: string){
-        const newMessage: any = {};
-        const newConversation: any = {};
-
+    async startNewChat(message: string, user_id?: string, session_id?: string) {
         const conversation_id = randomUUID();
-
-        newConversation.id = conversation_id;
-
-        newMessage.conversation_id = conversation_id;
-        newMessage.message = message;
-        newMessage.is_ai_response = false;
         
-        if (user_id) {
-            newConversation.user_id = user_id;
-            newMessage.user_id = user_id;
-        } else {
-            newConversation.session_id = session_id;
-            newMessage.session_id = session_id;
-        }
-        // [TODO] save the new message and conversation
-        this.conversationRepository.save(newConversation);
-        this.chatMessageRepository.save(newMessage);
-
-        const response = await this.getResponse([newMessage]);
-        response.conversation_id = conversation_id;
-        if (user_id) response.user_id = user_id;
-        if (session_id) response.session_id = session_id;
-
-        this.chatMessageRepository.save(response);
-        // [TODO] return the response to FE
+        // Tạo một cuộc trò chuyện mới
+        const newConversation = this.conversationRepository.create({ 
+            id: conversation_id,
+            user_id: user_id,
+            session_id: session_id
+        });
+        
+        // Tạo tin nhắn mới
+        const newMessage = this.chatMessageRepository.create({
+            conversation_id,
+            message,
+            is_ai_response: false,
+            user_id: user_id || undefined,
+            session_id: session_id || undefined
+        });
+    
+        await this.conversationRepository.save(newConversation);
+        await this.chatMessageRepository.save(newMessage);
+    
+        return this.getResponse(conversation_id, message, user_id, session_id);
     }
 
     // [TODO] get response from AI
-    async getResponse(history: any){
-        const CHAT_API = ""; // [TODO] add the chat api
-        const chatHistory = this.reconstructChatHistory(history);
-        const response = await fetch(CHAT_API, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({chatHistory})
+    async getResponse(conversation_id: string, message: string, user_id?:string, session_id?: string) {
+        const CHAT_API = "https://netexpert-aicore.onrender.com/api/v1/chat";
+
+        const newMessage = this.chatMessageRepository.create({
+            message: message,
+            user_id: user_id,
+            session_id: session_id,
+            conversation_id: conversation_id
         });
-        return response.json();
+        await this.chatMessageRepository.save(newMessage);
+
+        const chatHistory = await this.getChatHistory(conversation_id, user_id, session_id);
+    
+        try {
+            const response = await fetch(CHAT_API, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 
+                    location: "none",
+                    history: this.reconstructChatHistory(chatHistory) 
+                })
+            });
+    
+            if (!response.ok) {
+                throw new Error(`Chat API error: ${response.statusText}`);
+            }
+    
+            const data = await response.json();
+            data.conversation_id = conversation_id;
+            data.user_id = user_id;
+            data.session_id = session_id;
+            data.is_ai_response = true;
+
+            const newResponse = this.chatMessageRepository.create({
+                conversation_id: conversation_id,
+                user_id: user_id,
+                session_id: session_id,
+                is_ai_response: true,
+                message: data.response,
+                devices: data.devices,
+                blogs: data.blogs,
+                networks: data.networks
+            })
+
+            this.chatMessageRepository.save(newResponse)
+
+            return data;
+        } catch (error) {
+            console.error("Error calling AI:", error);
+            return { message: "Lỗi AI", is_ai_response: true };
+        }
     }
+    
 
     // [TODO] restructure the chat history
     private reconstructChatHistory(history: any){

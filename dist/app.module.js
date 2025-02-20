@@ -17,6 +17,7 @@ const typeorm_1 = require("@nestjs/typeorm");
 const sessions_module_1 = require("./sessions/sessions.module");
 const chat_module_1 = require("./chat/chat.module");
 const logger_middleware_1 = require("./middleware/logger.middleware");
+const config_1 = require("@nestjs/config");
 let AppModule = class AppModule {
     configure(consumer) {
         consumer
@@ -31,6 +32,9 @@ exports.AppModule = AppModule = __decorate([
             auth_module_1.AuthModule,
             users_module_1.UsersModule,
             blogs_module_1.BlogsModule,
+            config_1.ConfigModule.forRoot({
+                isGlobal: true
+            }),
             typeorm_1.TypeOrmModule.forRoot({
                 type: 'postgres',
                 host: 'aws-0-ap-southeast-1.pooler.supabase.com',

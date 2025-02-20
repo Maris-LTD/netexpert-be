@@ -8,12 +8,16 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { SessionsModule } from './sessions/sessions.module';
 import { ChatModule } from './chat/chat.module';
 import { LoggerMiddleware } from './middleware/logger.middleware';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
     AuthModule, 
     UsersModule, 
     BlogsModule,
+    ConfigModule.forRoot({
+      isGlobal: true
+    }),
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: 'aws-0-ap-southeast-1.pooler.supabase.com',

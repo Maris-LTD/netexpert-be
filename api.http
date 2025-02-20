@@ -12,3 +12,22 @@ GET http://localhost:3000/chat/conversation/user/837f47f0-ecf4-4f7f-98b2-b07233a
 
 ###
 GET http://localhost:3000/chat/history?conversation_id=977e2bb2-e344-4da8-98cd-fa3ef1bda43a&user_id=837f47f0-ecf4-4f7f-98b2-b07233ae7a15
+
+###
+POST http://localhost:3000/chat/newChat
+Content-Type: application/json
+
+{
+    "user_id": "837f47f0-ecf4-4f7f-98b2-b07233ae7a15",
+    "message": "hello, who are u?"
+}
+
+###
+POST http://localhost:3000/chat/question
+Content-Type: application/json
+
+{
+    "user_id": "837f47f0-ecf4-4f7f-98b2-b07233ae7a15",
+    "message": "i want some router cheap than 200usd?",
+    "conversation_id": "0061c6f9-5ceb-4d85-9a78-334a3044ba15"
+}

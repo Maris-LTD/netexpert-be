@@ -34,6 +34,18 @@ let ChatController = class ChatController {
             return this.chatService.getChatHistory(query.conversation_id, undefined, query.session_id);
         }
     }
+    async startNewChat(body) {
+        if (!body.message) {
+            throw new Error("Message is required");
+        }
+        return await this.chatService.startNewChat(body.message, body.user_id, body.session_id);
+    }
+    async getResponse(body) {
+        if (!body.message) {
+            throw new Error("Message is required");
+        }
+        return await this.chatService.getResponse(body.conversation_id, body.message, body.user_id, body.session_id);
+    }
 };
 exports.ChatController = ChatController;
 __decorate([
@@ -57,6 +69,20 @@ __decorate([
     __metadata("design:paramtypes", [userInfo_dto_1.UserInfoDto]),
     __metadata("design:returntype", Promise)
 ], ChatController.prototype, "getChatHistory", null);
+__decorate([
+    (0, common_1.Post)("/newChat"),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], ChatController.prototype, "startNewChat", null);
+__decorate([
+    (0, common_1.Post)("/question"),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], ChatController.prototype, "getResponse", null);
 exports.ChatController = ChatController = __decorate([
     (0, common_1.Controller)('chat'),
     __metadata("design:paramtypes", [chat_service_1.ChatService])
