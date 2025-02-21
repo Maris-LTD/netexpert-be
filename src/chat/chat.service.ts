@@ -61,15 +61,15 @@ export class ChatService {
     // [TODO] start chat, if not have user_id, create a session token and send it to FE
     async startNewChat(message: string, user_id?: string, session_id?: string) {
         const conversation_id = randomUUID();
+
+        if (!user_id && !session_id) session_id = randomUUID();
         
-        // Tạo một cuộc trò chuyện mới
         const newConversation = this.conversationRepository.create({ 
             id: conversation_id,
             user_id: user_id,
             session_id: session_id
         });
         
-        // Tạo tin nhắn mới
         const newMessage = this.chatMessageRepository.create({
             conversation_id,
             message,
