@@ -64,6 +64,8 @@ let ChatService = class ChatService {
     }
     async startNewChat(message, user_id, session_id) {
         const conversation_id = (0, crypto_1.randomUUID)();
+        if (!user_id && !session_id)
+            session_id = (0, crypto_1.randomUUID)();
         const newConversation = this.conversationRepository.create({
             id: conversation_id,
             user_id: user_id,

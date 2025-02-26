@@ -2,6 +2,7 @@ import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/co
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from 'src/users/users.service';
 import { jwtConstants } from './constants';
+import { User } from 'src/users/user.entity';
 
 @Injectable()
 export class AuthService {
@@ -27,5 +28,9 @@ export class AuthService {
 
     async signUp(username: string, email: string, password: string) {
         return this.usersService.createUser(username, email, password);
+    }
+
+    async getLoggedInUser() : Promise<User[]>{
+        return this.usersService.getUsers();
     }
 }

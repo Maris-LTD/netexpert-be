@@ -36,6 +36,9 @@ let AuthService = class AuthService {
     async signUp(username, email, password) {
         return this.usersService.createUser(username, email, password);
     }
+    async getLoggedInUser() {
+        return this.usersService.getUsers();
+    }
 };
 exports.AuthService = AuthService;
 exports.AuthService = AuthService = __decorate([
