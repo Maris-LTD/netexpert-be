@@ -26,7 +26,7 @@ import { ConfigModule } from '@nestjs/config';
       password: 'Dd150805',
       database: 'postgres',
       autoLoadEntities: true,
-      synchronize: false,
+      synchronize: true,
     }),
     SessionsModule,
     ChatModule,

@@ -43,7 +43,7 @@ exports.AppModule = AppModule = __decorate([
                 password: 'Dd150805',
                 database: 'postgres',
                 autoLoadEntities: true,
-                synchronize: false,
+                synchronize: true,
             }),
             sessions_module_1.SessionsModule,
             chat_module_1.ChatModule,
