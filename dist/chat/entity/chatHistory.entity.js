@@ -15,7 +15,7 @@ let ChatMessage = class ChatMessage {
 };
 exports.ChatMessage = ChatMessage;
 __decorate([
-    (0, typeorm_1.PrimaryColumn)('int8'),
+    (0, typeorm_1.PrimaryGeneratedColumn)(),
     __metadata("design:type", Number)
 ], ChatMessage.prototype, "id", void 0);
 __decorate([

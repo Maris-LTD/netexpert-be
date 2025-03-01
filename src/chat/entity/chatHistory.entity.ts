@@ -3,7 +3,7 @@ import { Column, Entity, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity('chat_history')
 export class ChatMessage {
-    @PrimaryColumn('int8')
+    @PrimaryGeneratedColumn()
     id: number
 
     @Column({nullable: true})
