@@ -129,7 +129,7 @@ export class ChatService {
 
             this.chatMessageRepository.save(newResponse)
 
-            return data;
+            return newResponse;
         } catch (error) {
             console.error("Error calling AI:", error);
             return { message: "Lỗi AI", is_ai_response: true };
