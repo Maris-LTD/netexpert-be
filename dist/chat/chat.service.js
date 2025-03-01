@@ -34,11 +34,8 @@ let ChatService = class ChatService {
         if (session_id)
             conditions.session_id = session_id;
         const conversations = await this.conversationRepository.find({ where: conditions });
-        if (!conversations || conversations.length === 0) {
-            console.log(`No conversations found for user_id: ${user_id}, session_id: ${session_id}`);
-            return [];
-        }
-        return conversations.map(i => i.id);
+        console.log(conversations);
+        return conversations;
     }
     async getChatHistory(conversation_id, user_id, session_id, limit) {
         const conditions = {};

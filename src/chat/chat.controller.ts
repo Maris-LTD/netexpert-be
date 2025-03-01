@@ -1,6 +1,7 @@
 import { Body, Controller, Get, Header, Param, Post, Query } from '@nestjs/common';
 import { ChatService } from './chat.service';
 import { UserInfoDto } from './dto/userInfo.dto';
+import { Conversation } from './entity/conversation.entity';
 
 @Controller('chat')
 export class ChatController {
@@ -9,12 +10,12 @@ export class ChatController {
     ){}
 
     @Get('conversation/user/:user_id')
-    async getUserConversations(@Param('user_id') user_id: string): Promise<Array<string>>{
+    async getUserConversations(@Param('user_id') user_id: string): Promise<Array<Conversation>>{
         return this.chatService.getConversations(user_id = user_id);
     }
 
     @Get('conversation/session/:session_id')
-    async getSessionConversations(@Param('session_id') session_id: string,): Promise<Array<string>>{
+    async getSessionConversations(@Param('session_id') session_id: string,): Promise<Array<Conversation>>{
         return this.chatService.getConversations(session_id = session_id);
     }
 
@@ -26,6 +27,7 @@ export class ChatController {
             return this.chatService.getChatHistory(query.conversation_id, undefined, query.session_id);
         }
     }
+
     @Post("/newChat")
     async startNewChat(@Body() body: { message: string; user_id?: string; session_id?: string }) {
         if (!body.message) {

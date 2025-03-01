@@ -17,7 +17,7 @@ export class ChatService {
     ){}
 
     //[TODO] get all conversation ids of a user
-    async getConversations(user_id?: string, session_id?: string): Promise<string[]> {
+    async getConversations(user_id?: string, session_id?: string): Promise<Conversation[]> {
         if (!user_id && !session_id) {
             throw new Error("Either user_id or session_id must be provided.");
         }
@@ -27,13 +27,8 @@ export class ChatService {
         if (session_id) conditions.session_id = session_id;
     
         const conversations = await this.conversationRepository.find({ where: conditions });
-    
-        if (!conversations || conversations.length === 0) {
-            console.log(`No conversations found for user_id: ${user_id}, session_id: ${session_id}`);
-            return [];
-        }
-    
-        return conversations.map(i => i.id);
+        console.log(conversations);
+        return conversations;
     }
     
 
@@ -64,10 +59,13 @@ export class ChatService {
 
         if (!user_id && !session_id) session_id = randomUUID();
         
+        const name = "Chat at " + new Date().toLocaleString();
+
         const newConversation = this.conversationRepository.create({ 
             id: conversation_id,
             user_id: user_id,
-            session_id: session_id
+            session_id: session_id,
+            name: name
         });
         
         const newMessage = this.chatMessageRepository.create({

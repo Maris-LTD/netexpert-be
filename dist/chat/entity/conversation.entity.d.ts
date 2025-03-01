@@ -3,4 +3,5 @@ export declare class Conversation {
     user_id: string;
     session_id: string;
     created_at: Date;
+    name: string;
 }
