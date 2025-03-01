@@ -77,7 +77,7 @@ export class ChatService {
         });
     
         await this.conversationRepository.save(newConversation);
-        await this.chatMessageRepository.save(newMessage);
+        // await this.chatMessageRepository.save(newMessage);
     
         return this.getResponse(conversation_id, message, user_id, session_id);
     }
