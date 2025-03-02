@@ -11,11 +11,17 @@ export declare class ChatController {
         message: string;
         user_id?: string;
         session_id?: string;
-    }): Promise<any>;
+    }): Promise<import("./entity/chatHistory.entity").ChatMessage | {
+        message: string;
+        is_ai_response: boolean;
+    }>;
     getResponse(body: {
         message: string;
         conversation_id: string;
         user_id?: string;
         session_id?: string;
-    }): Promise<any>;
+    }): Promise<import("./entity/chatHistory.entity").ChatMessage | {
+        message: string;
+        is_ai_response: boolean;
+    }>;
 }

@@ -78,7 +78,7 @@ export class ChatService {
     
         await this.conversationRepository.save(newConversation);
         // await this.chatMessageRepository.save(newMessage);
-    
+        
         return this.getResponse(conversation_id, message, user_id, session_id);
     }
 
@@ -124,8 +124,17 @@ export class ChatService {
                 message: data.response,
                 devices: data.devices,
                 blogs: data.blogs,
-                networks: data.networks
+                networks: data.networks,
+                report: ''
             })
+
+            if(data.networks){
+                const reportRespone = await this.getReport(JSON.stringify(data.networks));
+                console.log(reportRespone);
+                newResponse.report = reportRespone.response;
+            }
+
+            console.log("1 " + newResponse);
 
             this.chatMessageRepository.save(newResponse)
 
@@ -135,6 +144,30 @@ export class ChatService {
             return { message: "Lỗi AI", is_ai_response: true };
         }
     }
+
+    async getReport(networks: string) {
+        const REPORT_API = "https://netexpert-aicore.onrender.com/api/v1/chat/report";
+
+        const body = JSON.stringify({
+            location: "none",
+            history: [{
+                role: "users",
+                parts: [networks]
+            }]
+        })
+
+        const response = await fetch(REPORT_API, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: body
+        });
+
+        if (!response.ok) {
+            throw new Error(`Report API error: ${response.statusText}`);
+        }
+
+        return response.json();
+    } 
     
 
     // [TODO] restructure the chat history

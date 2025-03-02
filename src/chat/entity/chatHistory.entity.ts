@@ -27,6 +27,9 @@ export class ChatMessage {
     @Column('json', {default: []})
     networks: any;
 
+    @Column({nullable: true})
+    report: string;
+
     @Column({type: 'timestamp', default: () => 'CURRENT_TIMESTAMP'})
     created_at: Date
 

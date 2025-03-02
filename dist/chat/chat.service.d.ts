@@ -7,7 +7,14 @@ export declare class ChatService {
     constructor(conversationRepository: Repository<Conversation>, chatMessageRepository: Repository<ChatMessage>);
     getConversations(user_id?: string, session_id?: string): Promise<Conversation[]>;
     getChatHistory(conversation_id: string, user_id?: string, session_id?: string, limit?: number): Promise<ChatMessage[]>;
-    startNewChat(message: string, user_id?: string, session_id?: string): Promise<any>;
-    getResponse(conversation_id: string, message: string, user_id?: string, session_id?: string): Promise<any>;
+    startNewChat(message: string, user_id?: string, session_id?: string): Promise<ChatMessage | {
+        message: string;
+        is_ai_response: boolean;
+    }>;
+    getResponse(conversation_id: string, message: string, user_id?: string, session_id?: string): Promise<ChatMessage | {
+        message: string;
+        is_ai_response: boolean;
+    }>;
+    getReport(networks: string): Promise<any>;
     private reconstructChatHistory;
 }

@@ -63,10 +63,12 @@ let ChatService = class ChatService {
         const conversation_id = (0, crypto_1.randomUUID)();
         if (!user_id && !session_id)
             session_id = (0, crypto_1.randomUUID)();
+        const name = "Chat at " + new Date().toLocaleString();
         const newConversation = this.conversationRepository.create({
             id: conversation_id,
             user_id: user_id,
-            session_id: session_id
+            session_id: session_id,
+            name: name
         });
         const newMessage = this.chatMessageRepository.create({
             conversation_id,
@@ -76,7 +78,6 @@ let ChatService = class ChatService {
             session_id: session_id || undefined
         });
         await this.conversationRepository.save(newConversation);
-        await this.chatMessageRepository.save(newMessage);
         return this.getResponse(conversation_id, message, user_id, session_id);
     }
     async getResponse(conversation_id, message, user_id, session_id) {
@@ -114,15 +115,41 @@ let ChatService = class ChatService {
                 message: data.response,
                 devices: data.devices,
                 blogs: data.blogs,
-                networks: data.networks
+                networks: data.networks,
+                report: ''
             });
+            if (data.networks) {
+                const reportRespone = await this.getReport(JSON.stringify(data.networks));
+                console.log(reportRespone);
+                newResponse.report = reportRespone.response;
+            }
+            console.log("1 " + newResponse);
             this.chatMessageRepository.save(newResponse);
-            return data;
+            return newResponse;
         }
         catch (error) {
             console.error("Error calling AI:", error);
             return { message: "Lỗi AI", is_ai_response: true };
         }
+    }
+    async getReport(networks) {
+        const REPORT_API = "https://netexpert-aicore.onrender.com/api/v1/chat/report";
+        const body = JSON.stringify({
+            location: "none",
+            history: [{
+                    role: "users",
+                    parts: [networks]
+                }]
+        });
+        const response = await fetch(REPORT_API, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: body
+        });
+        if (!response.ok) {
+            throw new Error(`Report API error: ${response.statusText}`);
+        }
+        return response.json();
     }
     reconstructChatHistory(history) {
         const chatHistory = history.map(item => {

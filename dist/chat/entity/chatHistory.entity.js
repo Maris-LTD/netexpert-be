@@ -47,6 +47,10 @@ __decorate([
     __metadata("design:type", Object)
 ], ChatMessage.prototype, "networks", void 0);
 __decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], ChatMessage.prototype, "report", void 0);
+__decorate([
     (0, typeorm_1.Column)({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' }),
     __metadata("design:type", Date)
 ], ChatMessage.prototype, "created_at", void 0);
