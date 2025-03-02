@@ -37,7 +37,16 @@ let UsersService = class UsersService {
         return this.userRepository.find();
     }
     async getUser(username) {
-        return this.userRepository.findOne({ where: { username } });
+        return this.userRepository.findOne({ where: { username }, relations: ['location'] });
+    }
+    async updateUser(locationId, username) {
+        const user = await this.userRepository.findOne({ where: { username } });
+        console.log(user);
+        if (!user) {
+            throw new Error('User not found');
+        }
+        user.locationId = locationId;
+        return this.userRepository.save(user);
     }
 };
 exports.UsersService = UsersService;

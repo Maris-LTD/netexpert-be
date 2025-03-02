@@ -18,6 +18,7 @@ const sessions_module_1 = require("./sessions/sessions.module");
 const chat_module_1 = require("./chat/chat.module");
 const logger_middleware_1 = require("./middleware/logger.middleware");
 const config_1 = require("@nestjs/config");
+const location_module_1 = require("./location/location.module");
 let AppModule = class AppModule {
     configure(consumer) {
         consumer
@@ -47,6 +48,7 @@ exports.AppModule = AppModule = __decorate([
             }),
             sessions_module_1.SessionsModule,
             chat_module_1.ChatModule,
+            location_module_1.LocationModule,
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],

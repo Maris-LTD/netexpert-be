@@ -1,9 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Conversation } from './entity/conversation.entity';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { ChatMessage } from './entity/chatHistory.entity';
 import { randomUUID } from 'crypto';
+import { User } from 'src/users/user.entity';
+import { Location } from 'src/location/location.entity';
 
 
 @Injectable()
@@ -14,7 +16,14 @@ export class ChatService {
         
         @InjectRepository(ChatMessage)
         private readonly chatMessageRepository: Repository<ChatMessage>,
-    ){}
+
+        @InjectRepository(User)
+        private readonly userRepository: Repository<User>,
+
+        @InjectRepository(Location)
+        private readonly locationRepository: Repository<Location>
+    ){
+    }
 
     //[TODO] get all conversation ids of a user
     async getConversations(user_id?: string, session_id?: string): Promise<Conversation[]> {
@@ -129,7 +138,15 @@ export class ChatService {
             })
 
             if(data.networks){
-                const reportRespone = await this.getReport(JSON.stringify(data.networks));
+                const user = await this.userRepository.findOne({ where: { id: user_id } });
+                let id = 0;
+                if(!user){
+                    id = -1;
+                }
+                else
+                    id = user.locationId;
+                let location = await this.locationRepository.findOne({ where: { id } });
+                const reportRespone = await this.getReport(JSON.stringify(data.networks), location?.name || 'none');
                 console.log(reportRespone);
                 newResponse.report = reportRespone.response;
             }
@@ -145,11 +162,11 @@ export class ChatService {
         }
     }
 
-    async getReport(networks: string) {
+    async getReport(networks: string, location: string) {
         const REPORT_API = "https://netexpert-aicore.onrender.com/api/v1/chat/report";
 
         const body = JSON.stringify({
-            location: "none",
+            location: location,
             history: [{
                 role: "users",
                 parts: [networks]

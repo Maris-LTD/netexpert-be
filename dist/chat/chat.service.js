@@ -19,10 +19,14 @@ const conversation_entity_1 = require("./entity/conversation.entity");
 const typeorm_2 = require("typeorm");
 const chatHistory_entity_1 = require("./entity/chatHistory.entity");
 const crypto_1 = require("crypto");
+const user_entity_1 = require("../users/user.entity");
+const location_entity_1 = require("../location/location.entity");
 let ChatService = class ChatService {
-    constructor(conversationRepository, chatMessageRepository) {
+    constructor(conversationRepository, chatMessageRepository, userRepository, locationRepository) {
         this.conversationRepository = conversationRepository;
         this.chatMessageRepository = chatMessageRepository;
+        this.userRepository = userRepository;
+        this.locationRepository = locationRepository;
     }
     async getConversations(user_id, session_id) {
         if (!user_id && !session_id) {
@@ -119,7 +123,15 @@ let ChatService = class ChatService {
                 report: ''
             });
             if (data.networks) {
-                const reportRespone = await this.getReport(JSON.stringify(data.networks));
+                const user = await this.userRepository.findOne({ where: { id: user_id } });
+                let id = 0;
+                if (!user) {
+                    id = -1;
+                }
+                else
+                    id = user.locationId;
+                let location = await this.locationRepository.findOne({ where: { id } });
+                const reportRespone = await this.getReport(JSON.stringify(data.networks), location?.name || 'none');
                 console.log(reportRespone);
                 newResponse.report = reportRespone.response;
             }
@@ -132,10 +144,10 @@ let ChatService = class ChatService {
             return { message: "Lỗi AI", is_ai_response: true };
         }
     }
-    async getReport(networks) {
+    async getReport(networks, location) {
         const REPORT_API = "https://netexpert-aicore.onrender.com/api/v1/chat/report";
         const body = JSON.stringify({
-            location: "none",
+            location: location,
             history: [{
                     role: "users",
                     parts: [networks]
@@ -166,7 +178,11 @@ exports.ChatService = ChatService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(conversation_entity_1.Conversation)),
     __param(1, (0, typeorm_1.InjectRepository)(chatHistory_entity_1.ChatMessage)),
+    __param(2, (0, typeorm_1.InjectRepository)(user_entity_1.User)),
+    __param(3, (0, typeorm_1.InjectRepository)(location_entity_1.Location)),
     __metadata("design:paramtypes", [typeorm_2.Repository,
+        typeorm_2.Repository,
+        typeorm_2.Repository,
         typeorm_2.Repository])
 ], ChatService);
 class Message {

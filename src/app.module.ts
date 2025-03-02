@@ -9,6 +9,7 @@ import { SessionsModule } from './sessions/sessions.module';
 import { ChatModule } from './chat/chat.module';
 import { LoggerMiddleware } from './middleware/logger.middleware';
 import { ConfigModule } from '@nestjs/config';
+import { LocationModule } from './location/location.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { ConfigModule } from '@nestjs/config';
     }),
     SessionsModule,
     ChatModule,
+    LocationModule,
   ],
   controllers: [AppController],
   providers: [AppService],

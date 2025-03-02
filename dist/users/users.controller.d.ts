@@ -9,4 +9,7 @@ export declare class UsersController {
     }): Promise<import("./user.entity").User>;
     getUsers(): Promise<import("./user.entity").User[]>;
     getUser(username: string): Promise<import("./user.entity").User | null>;
+    updateUser(username: string, body: {
+        locationId: number;
+    }): Promise<import("./user.entity").User>;
 }

@@ -10,6 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.User = void 0;
+const location_entity_1 = require("../location/location.entity");
 const typeorm_1 = require("typeorm");
 let User = class User {
 };
@@ -30,6 +31,15 @@ __decorate([
     (0, typeorm_1.Column)({ nullable: false }),
     __metadata("design:type", String)
 ], User.prototype, "password", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", Number)
+], User.prototype, "locationId", void 0);
+__decorate([
+    (0, typeorm_1.ManyToOne)(() => location_entity_1.Location, location => location.id),
+    (0, typeorm_1.JoinColumn)({ name: 'locationId' }),
+    __metadata("design:type", location_entity_1.Location)
+], User.prototype, "location", void 0);
 __decorate([
     (0, typeorm_1.Column)({ nullable: false, default: () => 'CURRENT_TIMESTAMP' }),
     __metadata("design:type", Date)

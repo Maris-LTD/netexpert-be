@@ -32,6 +32,15 @@ export class UsersService {
   }
 
   async getUser(username: string) {
-    return this.userRepository.findOne({ where: { username } });
+    return this.userRepository.findOne({ where: { username }, relations: ['location'] });
+  }
+
+  async updateUser(locationId: number, username: string) {
+    const user = await this.userRepository.findOne({ where: { username } });
+    if (!user) {
+      throw new Error('User not found');
+    }
+    user.locationId = locationId;
+    return this.userRepository.save(user);
   }
 }

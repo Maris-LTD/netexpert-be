@@ -6,4 +6,5 @@ export declare class UsersService {
     createUser(username: string, email: string, password: string): Promise<User>;
     getUsers(): Promise<User[]>;
     getUser(username: string): Promise<User | null>;
+    updateUser(locationId: number, username: string): Promise<User>;
 }
